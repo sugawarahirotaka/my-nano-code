@@ -11,6 +11,8 @@ The user was originally new to TypeScript and REST APIs, but has studied in the 
 ## Primary References
 
 - Book materials are in `../docs/`.
+- The book support site is:
+  `https://laiso.github.io/nano-code/`
 - The completed reference implementation is:
   `https://github.com/laiso/nano-code/tree/main`
 
@@ -18,8 +20,9 @@ When investigating a problem, prefer this order:
 
 1. Inspect the local code and error output.
 2. Check the relevant section of the book in `../docs/`.
-3. Compare against the completed implementation when useful.
-4. Explain the smallest change needed and why it matches the book or reference implementation.
+3. Check the support site for corrections, notes, or related guidance.
+4. Compare against the completed implementation when useful.
+5. Explain the smallest change needed and why it matches the book, support site, or reference implementation.
 
 ## Working Style
 
