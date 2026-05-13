@@ -1,0 +1,51 @@
+# dependencies (bun install)
+node_modules
+
+# output
+out
+dist
+*.tgz
+
+# code coverage
+coverage
+*.lcov
+
+# logs
+logs
+_.log
+report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# caches
+.eslintcache
+.cache
+*.tsbuildinfo
+
+# IntelliJ based IDEs
+.idea
+
+# Finder (MacOS) folder config
+.DS_Store
+
+# 環境変数
+.env
+.env.*
+!.env.example
+# ビルド成果物
+dist/
+build/
+# エディタ設定
+.vscode/
+.idea/
+*.swp
+*.swo
+# OS固有のファイル
+.DS_Store
+Thumbs.db
+EOF
