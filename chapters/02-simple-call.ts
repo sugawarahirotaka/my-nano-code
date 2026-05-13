@@ -14,6 +14,10 @@ async function callOpenAI() {
         }),
     });
 
+    if (!response.ok) {
+        throw new Error(`OpenAI API error: ${response.status} ${await response.text()}`);
+    }
+    // dataの型定義をして、as hogehogeでエラー消える
     const data = await response.json();
     console.log(data.choices[0].message.content);
 }
