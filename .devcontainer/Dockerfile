@@ -7,10 +7,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     ca-certificates \
     sudo \
+    zsh \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # 非rootユーザ作成
-RUN useradd -ms /bin/bash vscode
+RUN useradd -ms /bin/zsh vscode
 RUN usermod -aG sudo vscode \
     && echo "vscode ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/vscode \
     && chmod 0440 /etc/sudoers.d/vscode
@@ -26,4 +27,4 @@ ENV PATH="/home/vscode/.bin/bin:$PATH"
 ENV BUN_INSTALL_CACHE_DIR=/home/vscode/.bun-cache
 RUN mkdir -p $BUN_INSTALL_CACHE_DIR
 
-CMD ["bash"]
+CMD ["zsh"]
