@@ -12,7 +12,11 @@
         "vscode": {
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "zsh"
-            }
+            },
+            "extensions": [
+                "GitHub.copilot",
+                "GitHub.copilot-chat"
+            ]
         }
     },
     "postCreateCommand": "zsh .devcontainer/setup-dotfiles.sh && if [ ! -f package.json ]; then bun init -y; fi && (bun install || true)"
