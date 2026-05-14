@@ -29,9 +29,8 @@ export function createOpenAI(config?: {
         return messages.map((m) => {
             if (m.role === 'tool') {
                 return { //map の中で 1個の message をどう変換するか
-
                     role: 'tool' as const,
-                    tool_call_id: m.toolCallId,
+                    tool_call_id: m.toolCallId, //toolロールのメッセージはtool_call_idフィールドへ
                     content: m.content,
                 };
             }
@@ -39,7 +38,7 @@ export function createOpenAI(config?: {
                 return {
                     role: 'assistant' as const,
                     content: m.content,
-                    tool_calls: m.toolCalls.map((tc) => ({
+                    tool_calls: m.toolCalls.map((tc) => ({ //assistantのツール呼び出しはtool_calls配列へ
                         id: tc.toolCallId,
                         type: 'function' as const,
                         function: { name: tc.name, arguments: JSON.stringify(tc.args) },
