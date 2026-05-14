@@ -56,7 +56,7 @@ export function createGoogle(config?: { apiKey?: string }): Provider {
         reason: string | undefined,
         hasFunctionCall: boolean
     ): GenerateTextResult['finishReason'] {
-        if (hasFunctionCall) return 'tool_calls';
+        if (hasFunctionCall) return 'tool_calls'; //ツール呼び出し時は明示的なフラグがないため、手動で判定
         switch (reason?.toUpperCase()) {
             case 'STOP':
                 return 'stop';
