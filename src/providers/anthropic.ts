@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
+import type { Tool as AnthropicTool } from '@anthropic-ai/sdk/resources/messages';
 import type {
     GenerateParams,
     GenerateTextResult,
@@ -84,7 +85,7 @@ export function createAnthropic(config?: {
             const tools = params.tools?.map((tool) => ({
                 name: tool.name,
                 description: tool.description,
-                input_schema: tool.parameters,
+                input_schema: tool.parameters as AnthropicTool.InputSchema,
             }));
 
             try {
@@ -110,11 +111,12 @@ export function createAnthropic(config?: {
                 );
                 const toolCalls: ToolCall[] | undefined =
                     toolUseBlocks.length > 0
-                        ?.toolUseBlocks.map((b: any) => ({
+                        ? toolUseBlocks.map((b) => ({
                             toolCallId: b.id,
-                            name: b.function.name,
-                            args: b.input,
-                        }));
+                            name: b.name,
+                            args: b.input as Record<string, unknown>,
+                        }))
+                        : undefined;
 
                 return {
                     text,
