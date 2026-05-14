@@ -96,17 +96,23 @@ export function createOpenAI(config?: {
                 // 3. SDKの応答を統一型に変換
                 const choice = completion.choices[0];
                 if (!choice) {
-                    throw new LLMApiError('APIからの応答がありません');
+                    throw new LLMApiError(500, 'openai', undefined, 'APIからの応答がありません');
                 }
                 const message = choice.message;
 
-                const toolCalls: ToolCall[] | undefined = message.tool_calls?.map(
-                    (tc) => ({
+                // const toolCalls: ToolCall[] | undefined = message.tool_calls?.map( //message.tool_callsの要素が、function tool call | custom tool callのユニオン型らしいけど、どうやって飛んで追うのかわからない、、、
+                //     (tc) => ({
+                //         toolCallId: tc.id,
+                //         name: tc.function.name,
+                //         args: JSON.parse(tc.function.arguments),
+                //     })
+                const toolCalls: ToolCall[] | undefined = message.tool_calls
+                    ?.filter((tc) => tc.type === 'function')
+                    .map((tc) => ({
                         toolCallId: tc.id,
                         name: tc.function.name,
-                        args: JSON.parse(tc.function.arguments),
-                    })
-                );
+                        args: JSON.parse(tc.function.arguments) as Record<string, unknown>,
+                    }));
 
                 return {
                     text: message.content ?? '',
