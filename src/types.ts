@@ -41,7 +41,7 @@ export type GenerateTextResult = {
     usage?: Usage;
 };
 
-// generateTextに渡すパラメータ
+// generateTextメソッドに渡すパラメータ
 export type GenerateParams = {
     messages: Message[];
     tools?: Tool[]; //利用可能なツールの配列
