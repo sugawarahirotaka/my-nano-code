@@ -1,4 +1,4 @@
-import OpenAI from "openai";
+import Anthropic from '@anthropic-ai/sdk';
 import type {
     GenerateParams,
     GenerateTextResult,
@@ -9,19 +9,19 @@ import type {
 } from '../types'
 import { LLMApiError } from "../types";
 
-export function createOpenAI(config?: {
+export function createAnthropic(config?: {
     apiKey?: string;
-    baseURL?: string; //プロキシやモックサーバーで使う場合に指定
+    baseURL?: string;
     maxRetries?: number;
 }): Provider {
     // SDK初期化（認証はSDKが担当）
-    const client = new OpenAI({
+    const client = new Anthropic({
         apiKey: config?.apiKey, //省略時は環境変数を自動参照
         baseURL: config?.baseURL,
         maxRetries: config?.maxRetries ?? 0, //nano-code-coreがリトライを制御
     });
 
-    // Nano Code Message -> OpenAI形式へ変換
+    // Nano Code Message -> Anthropic形式へ変換
     function convertMessages(messages: Message[]) {
         // messages.map((m) => {
         //     return 変換後のm;
@@ -69,7 +69,7 @@ export function createOpenAI(config?: {
 
     return (modelId: string): LanguageModel => ({
         async doGenerate(params: GenerateParams): Promise<GenerateTextResult> {
-            //ツール定義をOpenAI形式に変換
+            //ツール定義をAnthropic形式に変換
             const tools = params.tools?.map((tool) => ({
                 type: 'function' as const,
                 function: {
@@ -95,7 +95,7 @@ export function createOpenAI(config?: {
                 // 3. SDKの応答を統一型に変換
                 const choice = completion.choices[0];
                 if (!choice) {
-                    throw new LLMApiError(500, 'openai', undefined, 'APIからの応答がありません');
+                    throw new LLMApiError(500, 'anthropic', undefined, 'APIからの応答がありません');
                 }
                 const message = choice.message;
 
@@ -125,10 +125,10 @@ export function createOpenAI(config?: {
                 };
             } catch (error) {
                 // 2. SDKの例外をLLMApiErrorに変換
-                if (error instanceof OpenAI.APIError) {
+                if (error instanceof Anthropic.APIError) {
                     throw new LLMApiError(
                         error.status ?? 500,
-                        'openai',
+                        'anthropic',
                         error.code ?? undefined,
                         error.message,
                         error
