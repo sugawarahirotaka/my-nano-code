@@ -19,8 +19,8 @@ async function callOpenAI() {
     }
     // dataの型定義をして、as hogehogeでエラー消える
     const data = await response.json();
-    console.log(data.choices[0].message.content);
+    // console.log(data.choices[0].message.content);
 }
 
 // 実行
-callOpenAI()
+// callOpenAI()
