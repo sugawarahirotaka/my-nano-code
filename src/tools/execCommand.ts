@@ -173,6 +173,7 @@ export async function execCommandExecute(args: { command: string }): Promise<str
 export const execCommand = {
     name: 'execCommand',
     description: 'ワークスペース内で許可された汎用コマンドを実行する。利用可能:bun test、ls、cat、grep、find、pwd、mkdir。',
+    needsApproval: true, // section5 人間の承認が必要なツールであることを示すフラグ
     parameters: {
         type: 'object',
         properties: {

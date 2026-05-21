@@ -51,6 +51,7 @@ async function readFileExecute(args: { path: string }): Promise<string> {
 export const readFile = {
     name: 'readFile',
     description: 'ワークスペース内の指定されたパスのファイル内容を文字列として読み込む。ファイルが存在しない場合はエラーを返す。100KBを超える巨大ファイルは読み込めない(コンテキストウィンドウ保護のため)。相対パスまたは絶対パスを指定できる。',
+    needsApproval: false, // section5　読取のみゆえ、承認不要
     parameters: {
         type: 'object',
         properties: {

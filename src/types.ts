@@ -4,7 +4,7 @@ export interface Tool {
     description: string;
     parameters: Record<string, unknown>; //JSON Schema相当（型チェックは実行時）
     execute: (args: Record<string, unknown>) => Promise<string>;
-    // needsApproval: boolean // section5 人間の承認
+    needsApproval: boolean // section5 人間の承認
     // 将来の拡張例：
     // timeout?: number; //ツール固有のタイムアウト
     // retryable?: boolean; //失敗時の再試行可否
