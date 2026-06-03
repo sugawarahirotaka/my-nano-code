@@ -48,7 +48,7 @@ async function main() {
             readFile,
             writeFile,
             editFile,
-            // execCommand,
+            execCommand,
         },
         maxSteps: 15,
     })
