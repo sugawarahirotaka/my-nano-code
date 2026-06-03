@@ -55,8 +55,7 @@ export const readFile = {
     parameters: {
         type: 'object',
         properties: {
-            type: "object",
-            properties: {
+            path: {
                 type: "string",
                 description: "読み込むファイルのパス（例：'README.md', 'src/index.ts' )"
             }
