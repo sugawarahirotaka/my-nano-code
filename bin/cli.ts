@@ -152,7 +152,8 @@ ${issueText}
     const agent = new Agent({
         name: 'nano-code',
         model,
-        instructions: yoloMode ? issueDrivenInstructions : baseInstructions, //外部ファイルから読み込んだプロンプト
+        instructions: isIssueDriven ? issueDrivenInstructions : baseInstructions, //外部ファイルから読み込んだプロンプト
+        approvalFunc: yoloMode ? async () => true : undefined,
         tools: {
             // 第4章で実装した基本ツール（execCommand は第8章の統合版でサンドボックス対応版に差し替え）
             readFile,
