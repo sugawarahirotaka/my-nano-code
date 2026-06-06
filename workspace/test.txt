@@ -1,2 +1,4 @@
 Hello, Nano Code Agent!
 This is a test file.
+
+Checked for workspace directories: none found.
