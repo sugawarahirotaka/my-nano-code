@@ -12,11 +12,11 @@ import { execCommand as execCommand } from '../src/tools/execCommand';
 // import { execCommandSandbox as execCommand } from '../src/tools/execCommandSandbox';
 // // 第8章で追加された Web 取得ツール
 // import { webFetch } from '../src/tools/webFetch';
-// // 第7章で追加された Git / GitHub 連携用ツール
-// import { createBranch, commit, pushBranch } from '../src/tools/git';
-// import { createPullRequest, createIssueComment } from '../src/tools/github';
-// import { mkdirSync, existsSync } from 'fs';
-// import { config } from '../src/config'; // 第8章で追加されたサンドボックス等の全体コンフィグ
+// 第7章で追加された Git / GitHub 連携用ツール
+import { createBranch, commit, pushBranch } from '../src/tools/git';
+import { createPullRequest, createIssueComment } from '../src/tools/github';
+import { mkdirSync, existsSync } from 'fs';
+import { config } from '../src/config'; // 第8章で追加されたサンドボックス等の全体コンフィグ
 
 // 安全設定: workspaceディレクトリ内のみ操作可能
 const WORKSPACE_ROOT = path.resolve(process.cwd(), 'workspace');
@@ -40,10 +40,10 @@ async function main() {
     const responsesMode = values['responses'] ?? false;
 
     // 第8章: サンドボックス動作設定のコンフィグへの反映
-    // config.sandbox = values['sandbox'] ?? false;
-    // if (values['allowed-domains']) {
-    //     config.allowedDomains.push(...values['allowed-domains'].split(','));
-    // }
+    config.sandbox = values['sandbox'] ?? false;
+    if (values['allowed-domains']) {
+        config.allowedDomains.push(...values['allowed-domains'].split(','));
+    }
 
     // --- 入力の取得 (第7章 GitHub Actions 連携用のIssue駆動対応) ---
     // 1. CLI引数を優先
@@ -65,51 +65,52 @@ async function main() {
     }
     // --- 環境設定 ---
 
-    // // ワークスペースディレクトリが存在しない場合は自動作成する
-    // if (!existsSync(WORKSPACE_ROOT)) {
-    //     mkdirSync(WORKSPACE_ROOT, { recursive: true });
-    // }
+    // ワークスペースディレクトリが存在しない場合は自動作成する
+    if (!existsSync(WORKSPACE_ROOT)) {
+        mkdirSync(WORKSPACE_ROOT, { recursive: true });
+    }
 
-    // const provider = process.env.LLM_PROVIDER;
-    // const modelName = process.env.LLM_MODEL;
-    // const apiKey = process.env.LLM_API_KEY;
+    const provider = process.env.LLM_PROVIDER;
+    const modelName = process.env.LLM_MODEL;
+    const apiKey = process.env.LLM_API_KEY;
 
-    // // GitHub Actions環境での実行かどうかを簡易判定（CI=trueなど）
-    // const isCI = process.env.CI === 'true';
+    // GitHub Actions環境での実行かどうかを簡易判定（CI=trueなど）
+    const isCI = process.env.CI === 'true';
 
-    // console.log('=== Nano Code Agent ===\n');
-    // console.log(`Provider: ${provider || '(未設定)'}`);
-    // console.log(`Model: ${modelName || '(未設定)'}`);
+    console.log('=== Nano Code Agent ===\n');
+    console.log(`Provider: ${provider || '(未設定)'}`);
+    console.log(`Model: ${modelName || '(未設定)'}`);
 
-    // if (isCI && apiKey) {
-    //     console.log(`::add-mask::${apiKey}`);
-    // }
+    if (isCI && apiKey) {
+        console.log(`::add-mask::${apiKey}`);
+    }
 
-    // console.log(`Workspace: ${WORKSPACE_ROOT}`);
-    // if (isIssueDriven) {
-    //     console.log('[モード] Issue駆動モード (CI)');
-    // }
-    // if (yoloMode) {
-    //     console.log('[モード] 自動承認モード (--yolo)');
-    // }
-    // if (streamMode) {
-    //     console.log('[モード] ストリーミングモード (--stream)');
-    // }
-    // if (responsesMode) {
-    //     console.log('[モード] Responses API使用 (--responses)');
-    // }
-    // if (config.sandbox) {
-    //     console.log('[モード] サンドボックスモード (--sandbox)');
-    // }
-    // console.log(`Task: ${userPrompt.slice(0, 100)}${userPrompt.length > 100 ? '...' : ''}\n`);
+    console.log(`Workspace: ${WORKSPACE_ROOT}`);
+    if (isIssueDriven) {
+        console.log('[モード] Issue駆動モード (CI)');
+    }
+    if (yoloMode) {
+        console.log('[モード] 自動承認モード (--yolo)');
+    }
+    if (streamMode) {
+        console.log('[モード] ストリーミングモード (--stream)');
+    }
+    if (responsesMode) {
+        console.log('[モード] Responses API使用 (--responses)');
+    }
+    if (config.sandbox) {
+        console.log('[モード] サンドボックスモード (--sandbox)');
+    }
+    console.log(`Task: ${userPrompt.slice(0, 100)}${userPrompt.length > 100 ? '...' : ''}\n`);
 
-    // if (!provider || !modelName || !apiKey) {
-    //     console.error('[ERROR] LLM設定が不足しています');
-    //     process.exit(1);
-    // }
+    if (!provider || !modelName || !apiKey) {
+        console.error('[ERROR] LLM設定が不足しています');
+        process.exit(1);
+    }
 
     // 環境変数からモデルを生成
     const model = createModelFromEnv();
+    // ↓は、OpenAI Responses APIに対応させるため
     // const model = createModelFromEnv({ useResponses: responsesMode });
 
     // プロンプトを読み込む（ベース + AGENTS.md）（第6章の基本実装）
@@ -163,11 +164,11 @@ ${issueText}
             // 第8章 サンドボックス検証用に追加された Web 取得ツール
             // webFetch,
             // 第7章 GitHub Actions 連携用に追加された Git/GitHub 操作ツール
-            // createBranch,
-            // commit,
-            // pushBranch,
-            // createPullRequest,
-            // createIssueComment,
+            createBranch,
+            commit,
+            pushBranch,
+            createPullRequest,
+            createIssueComment,
         },
         maxSteps: 20,
     })
