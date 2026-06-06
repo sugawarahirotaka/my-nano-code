@@ -6,7 +6,8 @@
     "workspaceFolder": "/nano-code",
     "remoteUser": "vscode",
     "mounts": [
-        "source=${localWorkspaceFolder},target=/nano-code,type=bind"
+        "source=${localWorkspaceFolder},target=/nano-code,type=bind",
+        "source=nano-code-bun-cache,target=/home/vscode/.bun-cache,type=volume"
     ],
     "customizations": {
         "vscode": {
