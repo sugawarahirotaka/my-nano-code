@@ -16,7 +16,7 @@ import { execCommand as execCommand } from '../src/tools/execCommand';
 import { createBranch, commit, pushBranch } from '../src/tools/git';
 import { createPullRequest, createIssueComment } from '../src/tools/github';
 import { mkdirSync, existsSync } from 'fs';
-import { config } from '../src/config'; // 第8章で追加されたサンドボックス等の全体コンフィグ
+// import { config } from '../src/config'; // 第8章で追加されたサンドボックス等の全体コンフィグ
 
 // 安全設定: workspaceディレクトリ内のみ操作可能
 const WORKSPACE_ROOT = path.resolve(process.cwd(), 'workspace');
@@ -40,10 +40,10 @@ async function main() {
     const responsesMode = values['responses'] ?? false;
 
     // 第8章: サンドボックス動作設定のコンフィグへの反映
-    config.sandbox = values['sandbox'] ?? false;
-    if (values['allowed-domains']) {
-        config.allowedDomains.push(...values['allowed-domains'].split(','));
-    }
+    // config.sandbox = values['sandbox'] ?? false;
+    // if (values['allowed-domains']) {
+    //     config.allowedDomains.push(...values['allowed-domains'].split(','));
+    // }
 
     // --- 入力の取得 (第7章 GitHub Actions 連携用のIssue駆動対応) ---
     // 1. CLI引数を優先
@@ -98,9 +98,9 @@ async function main() {
     if (responsesMode) {
         console.log('[モード] Responses API使用 (--responses)');
     }
-    if (config.sandbox) {
-        console.log('[モード] サンドボックスモード (--sandbox)');
-    }
+    // if (config.sandbox) {
+    //     console.log('[モード] サンドボックスモード (--sandbox)');
+    // }
     console.log(`Task: ${userPrompt.slice(0, 100)}${userPrompt.length > 100 ? '...' : ''}\n`);
 
     if (!provider || !modelName || !apiKey) {
